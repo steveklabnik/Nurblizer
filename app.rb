@@ -1,19 +1,13 @@
 require 'sinatra'
 
-# configure block is a Sinatra feature
-configure do
-    @@nouns = File.open('nouns.txt').map{|line|
-        line.strip.downcase
-    }
-end
-
+set :nouns, File.open('nouns.txt').collect {|line| line.strip.downcase }
 
 def nurble(text)
     text = text.upcase
     words = text.downcase().gsub(/[^a-z ]/, '').split
 
     words.each{|w|
-        if not @@nouns.include? w
+        if not settings.nouns.include? w
           pattern = Regexp.new('(\b)'+ w + '(\b)', Regexp::IGNORECASE)
           replacement = "\1<span class=\"nurble\">nurble</span>\2"
           text.gsub! pattern, replacement

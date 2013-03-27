@@ -10,7 +10,7 @@ class Nurblizer < Sinatra::Base
     words.each do |w|
       unless settings.nouns.include? w
         pattern = /(\b)#{w}(\b)/i
-        replacement = "\1<span class=\"nurble\">nurble</span>\2"
+        replacement = %q{\1<span class="nurble">nurble</span>\2}
         text.gsub! pattern, replacement
       end
     end

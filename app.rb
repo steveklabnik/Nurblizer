@@ -1,29 +1,31 @@
-require 'sinatra'
+require 'sinatra/base'
 
-set :nouns, File.open('nouns.txt').collect {|line| line.strip.downcase }
+class Nurblizer < Sinatra::Base
+  set :nouns, File.open('nouns.txt').collect {|line| line.strip.downcase }
 
-def nurble(text)
-  text = text.upcase
-  words = text.downcase().gsub(/[^a-z ]/, '').split
+  def nurble(text)
+    text = text.upcase
+    words = text.downcase().gsub(/[^a-z ]/, '').split
 
-  words.each do |w|
-    if not settings.nouns.include? w
-      pattern = Regexp.new('(\b)'+ w + '(\b)', Regexp::IGNORECASE)
-      replacement = "\1<span class=\"nurble\">nurble</span>\2"
-      text.gsub! pattern, replacement
+    words.each do |w|
+      if not settings.nouns.include? w
+        pattern = Regexp.new('(\b)'+ w + '(\b)', Regexp::IGNORECASE)
+        replacement = "\1<span class=\"nurble\">nurble</span>\2"
+        text.gsub! pattern, replacement
+      end
     end
+    text.gsub(/\n/, '<br>')
   end
-  text.gsub(/\n/, '<br>')
-end
 
 
-get "/" do
-  haml :index
-end
+  get "/" do
+    haml :index
+  end
 
 
-post "/nurble" do
-  haml :nurble, :locals => {
-    :text => nurble(params["text"])
-  }
+  post "/nurble" do
+    haml :nurble, :locals => {
+      :text => nurble(params["text"])
+    }
+  end
 end

@@ -8,7 +8,7 @@ class Nurblizer < Sinatra::Base
     words = text.downcase.gsub(/[^a-z ]/, '').split
 
     words.each do |w|
-      if not settings.nouns.include? w
+      unless settings.nouns.include? w
         pattern = Regexp.new('(\b)'+ w + '(\b)', Regexp::IGNORECASE)
         replacement = "\1<span class=\"nurble\">nurble</span>\2"
         text.gsub! pattern, replacement

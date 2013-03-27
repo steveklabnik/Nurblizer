@@ -21,8 +21,7 @@ class Nurblizer < Sinatra::Base
     haml :index
   end
 
-
-  post "/nurble" do
+  get "/nurble" do
     haml :nurble, :locals => {
       :text => nurble(params["text"])
     }

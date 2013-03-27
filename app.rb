@@ -5,7 +5,7 @@ class Nurblizer < Sinatra::Base
 
   def nurble(text)
     text = text.upcase
-    words = text.downcase().gsub(/[^a-z ]/, '').split
+    words = text.downcase.gsub(/[^a-z ]/, '').split
 
     words.each do |w|
       if not settings.nouns.include? w
